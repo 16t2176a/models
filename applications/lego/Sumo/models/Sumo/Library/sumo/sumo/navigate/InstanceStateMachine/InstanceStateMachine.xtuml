@@ -523,7 +523,7 @@ INSERT INTO SM_ACT
 	"16a3b4fb-9031-46ab-a722-1fc6da79d7cb",
 	1,
 	'self.line_detections = self.line_detections + 1;
-if (self.line_detections >= 3)
+if (self.line_detections >= 300)
   generate navigate7:halt() to self;
 else
   select one s related by self->steering[R1];
@@ -549,7 +549,13 @@ INSERT INTO SM_ACT
 	'select one d related by self->drive[R2];
 d.stop();
 select one s related by self->steering[R1];
-generate steering1:left() to s;
+if (Orientation::right == self.last_turn)
+  generate steering1:left() to s;
+  self.last_turn = Orientation::left;
+else
+  generate steering2:right() to s;
+  self.last_turn = Orientation::right;
+end if;
 create event instance e of navigate1:pop() to self;
 t = TIM::timer_start( microseconds:self.target_duration * 1000000, event_inst:e );',
 	'',
@@ -638,7 +644,7 @@ INSERT INTO SM_AH
 INSERT INTO SM_ACT
 	VALUES ("f29270f4-33ac-4639-9ac4-ff783d43a6cd",
 	"16a3b4fb-9031-46ab-a722-1fc6da79d7cb",
-	3,
+	1,
 	'',
 	'',
 	0);
@@ -673,8 +679,8 @@ INSERT INTO GD_SHP
 INSERT INTO GD_NCS
 	VALUES ("efc568c3-80ce-46f1-9114-ca868c3e6044");
 INSERT INTO DIM_ND
-	VALUES (128.000000,
-	80.000000,
+	VALUES (241.000000,
+	120.000000,
 	"efc568c3-80ce-46f1-9114-ca868c3e6044");
 INSERT INTO DIM_GE
 	VALUES (1776.000000,
@@ -707,8 +713,8 @@ INSERT INTO DIM_CON
 	"efc568c3-80ce-46f1-9114-ca868c3e6044");
 INSERT INTO DIM_CON
 	VALUES ("3e0ed8be-0365-4745-becc-dfa46258ec6b",
-	1904.000000,
-	1236.000000,
+	2017.000000,
+	1235.000000,
 	"efc568c3-80ce-46f1-9114-ca868c3e6044");
 INSERT INTO DIM_CON
 	VALUES ("b33c07ba-838b-414e-802c-4bb17e299827",
@@ -850,7 +856,7 @@ INSERT INTO DIM_CON
 	"38e884d2-1f22-4ebf-b4d6-3e7efde0fae1");
 INSERT INTO DIM_CON
 	VALUES ("80670d0f-e486-4342-adeb-04dc38f61fc2",
-	1961.000000,
+	2087.000000,
 	1344.000000,
 	"38e884d2-1f22-4ebf-b4d6-3e7efde0fae1");
 INSERT INTO GD_GE
@@ -1363,7 +1369,7 @@ INSERT INTO DIM_ND
 	0.000000,
 	"f9305d57-f788-4a7f-86dd-64de08505f8c");
 INSERT INTO DIM_GE
-	VALUES (2047.000000,
+	VALUES (2143.000000,
 	1202.000000,
 	"f9305d57-f788-4a7f-86dd-64de08505f8c",
 	"00000000-0000-0000-0000-000000000000");
@@ -1404,21 +1410,21 @@ INSERT INTO GD_LS
 	"70e571fa-71d0-40a0-950c-7d9dfb50396d");
 INSERT INTO DIM_WAY
 	VALUES ("24c23ffa-1aa7-487b-ac3d-44cd7f40844d",
-	1904.000000,
-	1236.000000,
+	2017.000000,
+	1235.000000,
 	"ac689466-785f-48d2-8e87-042900533518",
 	"00000000-0000-0000-0000-000000000000",
 	"00000000-0000-0000-0000-000000000000");
 INSERT INTO DIM_WAY
 	VALUES ("70e571fa-71d0-40a0-950c-7d9dfb50396d",
-	1961.000000,
+	2087.000000,
 	1344.000000,
 	"ac689466-785f-48d2-8e87-042900533518",
 	"00000000-0000-0000-0000-000000000000",
 	"24c23ffa-1aa7-487b-ac3d-44cd7f40844d");
 INSERT INTO DIM_WAY
 	VALUES ("c1c6406d-9f8c-4e23-a830-b8b21107578c",
-	1961.000000,
+	2087.000000,
 	1235.000000,
 	"ac689466-785f-48d2-8e87-042900533518",
 	"00000000-0000-0000-0000-000000000000",
